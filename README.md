@@ -1,4 +1,4 @@
-vtigrservice
+vtigerservice
 ============
 
 易客CRM荣誉出品，vtigercrm移动版的CRM后端所需要的service文件
