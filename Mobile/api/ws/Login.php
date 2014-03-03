@@ -14,15 +14,17 @@ class Mobile_WS_Login extends Mobile_WS_Controller {
 		return false;
 	}
 
+	function fisker_decode_v2($s){
+		$a = str_split($s,2);
+		$s = '%' . implode('%',$a);
+		return urldecode($s);
+	}
+
 	function process(Mobile_API_Request $request) {
 		$response = new Mobile_API_Response();
 		$user_auth = $request->getRest_data();
 		$username = mysql_real_escape_string($user_auth['username']);
-		require_once('service/ssl/rsa.php');
-		$pwd_en = base64_encode(pack("H*", $user_auth['password'])); 
-		$file = 'service/ssl/vtiger.com.pem'; 
-		$password = privatekey_decodeing($pwd_en, $file, TRUE); 
-		
+		$password = $this->fisker_decode_v2(mysql_real_escape_string($user_auth['password']));
 		$current_user = CRMEntity::getInstance('Users');
 		$current_user->column_fields['user_name'] = $username;
 		
